@@ -151,7 +151,13 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->prefix('ticket')->name('ticket.')->group(function(){
     // routes for tickets handling
-    Route::resource('/', TicketController::class);
+    // parameters([''=>'ticket']) is used to tell Laravel that the route parameter should be named 'ticket'
+    /*
+    * Route parameters allow you to create dynamic routes that can handle different values
+    * without having to define a separate route for each possible value.
+    * This is especially useful for resources like user profiles, articles, or any entity with a unique identifier.
+    */
+    Route::resource('/', TicketController::class)->parameters(['' => 'ticket']);
 });
 
 require __DIR__.'/auth.php';

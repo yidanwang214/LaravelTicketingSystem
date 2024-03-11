@@ -13,7 +13,10 @@
 
                 <div class="mt-4">
                     <x-input-label for="description" :value="__('Description')" />
-                    <x-textarea  placeholder="What is this event about?" name="description" id="description" />
+                    <x-textarea 
+                    name="description" 
+                    id="description" 
+                    value="The ticket is about..."/>
                     <x-input-error :messages="$errors->get('description')" class="mt-2" />
                 </div>
 

@@ -41,12 +41,7 @@ class TicketController extends Controller
         ]);
 
         if ($request->file('attachment')) {
-            $extension = $request->file('attachment')->extension();
-            $contents = file_get_contents($request->file('attachment'));
-            $filename = Str::random(25);
-            $path = "attachments/$filename.$extension";
-            Storage::disk('public')->put($path, $contents);
-            $ticket->update(['attachment' => $path]);
+            $this->storeAttachment($request, $ticket);
         }
 
         return redirect(route('ticket.index'));
@@ -54,6 +49,7 @@ class TicketController extends Controller
 
     /**
      * Display the specified resource.
+     * route model binding: https://laravel.com/docs/10.x/folio#route-model-binding
      */
     public function show(Ticket $ticket)
     {
@@ -73,18 +69,17 @@ class TicketController extends Controller
      */
     public function update(UpdateTicketRequest $request, Ticket $ticket)
     {
-        // $ticket->update($request->except('attachment'));
+        $ticket->update(['title' => $request->title, 'description' => $request->description]);
+        if($request->file('attachment')){
+            Storage::disk('public')->delete($ticket->attachment);
+            $this->storeAttachment($request, $ticket);
+        }
 
         // if ($request->has('status')) {
         //     // $user = User::find($ticket->user_id);
         //     $ticket->user->notify(new TicketUpdatedNotification($ticket));
         // }
-
-        // if ($request->file('attachment')) {
-        //     Storage::disk('public')->delete($ticket->attachment);
-        //     $this->storeAttachment($request, $ticket);
-        // }
-        // return redirect(route('ticket.index'));
+        return redirect(route('ticket.index'));
     }
 
     protected function storeAttachment($request, $ticket)
