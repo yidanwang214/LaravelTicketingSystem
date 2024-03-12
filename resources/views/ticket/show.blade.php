@@ -18,9 +18,9 @@
                 @endif
             </div>
 
-            <div class="flex justify-between">
+            <div class="flex justify-between mt-2">
                 <div class="flex">
-                    <a href="{{ route('ticket.edit', $ticket->id) }}">
+                    <a href="{{ route('ticket.edit', $ticket->id) }}>
                         <x-primary-button>Edit</x-primary-button>
                     </a>
 
@@ -30,6 +30,7 @@
                         <x-primary-button>Delete</x-primary-button>
                     </form>
                 </div>
+                {{-- the following section will only be running if the user is admin --}}
                 @if (auth()->user()->isAdmin)
                     <div class="flex">
                         <form action="{{ route('ticket.update', $ticket->id) }}" method="post">

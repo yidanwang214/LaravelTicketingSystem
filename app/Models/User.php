@@ -47,17 +47,21 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function tickets(): HasMany
-    {
-        return $this->hasMany(Ticket::class);
-    }
-
+    // accesser for admin
+    // Attribute::make method lets users defind custom behaviour for model attributes
     protected function isAdmin(): Attribute
     {
         $admins = ['yidan.eden.wang@gmail.com'];
         return Attribute::make(
+            // if the user email is included in the $admins list, return true
             get: fn () => in_array($this->email, $admins)
         );
+    }
+
+    // relation between a user and their tickets
+    public function tickets(): HasMany
+    {
+        return $this->hasMany(Ticket::class);
     }
 
     /**
